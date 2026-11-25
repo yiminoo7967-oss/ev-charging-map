@@ -1,0 +1,132 @@
+* { box-sizing: border-box; }
+:root { color-scheme: light; font: 16px/1.5 system-ui, "Malgun Gothic", sans-serif; color: #182a48; background: #eef3fc; }
+body { margin: 0; }
+.shell { width: min(1440px, 94%); margin: auto; }
+.hero {
+  position: relative;
+  color: white;
+  background-color: #0b2149;
+  background-image: linear-gradient(90deg, #081936 12%, #081936e6 30%, transparent 67%), url("bungaeman-background.png");
+  background-position: center, right 29%;
+  background-size: auto, auto 128%;
+  background-repeat: no-repeat;
+  border-bottom: 4px solid #ffcf47;
+}
+.hero-content { position: relative; z-index: 1; min-height: clamp(225px, 23vw, 340px); display: grid; align-content: center; padding-block: 1.5rem; }
+.hero p { margin: .55rem 0 0; color: #e1ecff; max-width: 21ch; }
+.theme-play {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  justify-self: start;
+  margin-top: .8rem;
+  min-height: 44px;
+  padding: .45rem .85rem;
+  border: 0;
+  border-radius: 8px;
+  background: #ffcf47;
+  color: #0b2149;
+  font-weight: 750;
+  text-decoration: none;
+}
+.theme-play:hover { background: #ffe184; }
+.theme-play:focus-visible { outline: 2px solid white; outline-offset: 3px; }
+.theme-play-label { padding-left: .5rem; border-left: 1px solid #9b7118; font-size: .875rem; }
+.motion-control {
+  justify-self: start;
+  margin-top: .4rem;
+  padding-inline: .8rem;
+  border-color: #adc4ec;
+  background: #132f58;
+  color: #fff;
+  font-size: .875rem;
+}
+.motion-control:hover { background: #24497a; }
+.motion-control[aria-pressed="false"] { color: #bdcdea; }
+.theme-panel { margin-bottom: 1rem; padding: 1rem; }
+.theme-panel iframe { display: block; width: min(100%, 640px); min-height: 200px; aspect-ratio: 16 / 9; border: 0; border-radius: 8px; }
+.theme-panel p { margin: .5rem 0 0; }
+.flight-stage {
+  position: absolute;
+  inset: 0 0 0 43%;
+  overflow: hidden;
+  pointer-events: none;
+}
+.flyer {
+  position: absolute;
+  left: var(--left);
+  top: var(--top);
+  width: clamp(31px, 5vw, 72px);
+  animation: hero-flight var(--duration) ease-in-out var(--delay) infinite;
+}
+.flyer img { display: block; width: 100%; height: auto; filter: drop-shadow(0 3px 5px #021128cc); }
+.flyer-facing { position: relative; transform: scaleX(var(--face)); }
+.flyer-bolt {
+  position: absolute;
+  top: 19%;
+  left: 91%;
+  width: 57%;
+  height: 27%;
+  background: #ffe34d;
+  clip-path: polygon(0 80%, 43% 23%, 41% 56%, 100% 0, 65% 76%, 62% 44%);
+  opacity: 0;
+  animation: hero-lightning 4.2s ease-out var(--spark-delay) infinite;
+}
+.flight-stage[data-motion="paused"] .flyer,
+.flight-stage[data-motion="paused"] .flyer-bolt { animation-play-state: paused; }
+.flight-stage[data-motion="paused"] .flyer-bolt { opacity: 0; }
+@keyframes hero-flight {
+  0%, 100% { transform: translate(-50%, -50%) rotate(-7deg); }
+  35% { transform: translate(calc(-50% + var(--sway)), calc(-50% - 15px)) rotate(5deg); }
+  70% { transform: translate(calc(-50% - var(--sway) / 2), calc(-50% + 13px)) rotate(-10deg); }
+}
+@keyframes hero-lightning {
+  0%, 78%, 100% { opacity: 0; }
+  83% { opacity: .9; transform: translate(0, 0) scale(.75); }
+  95% { opacity: 0; transform: translate(48px, -20px) scale(1.16); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .flight-stage:not([data-motion="active"]) .flyer,
+  .flight-stage:not([data-motion="active"]) .flyer-bolt { animation: none; }
+  .flight-stage:not([data-motion="active"]) .flyer { transform: translate(-50%, -50%); }
+}
+main.shell { padding-top: 1rem; }
+h1 { margin: 0; max-width: min(60%, 13ch); font-size: clamp(1.65rem, 5vw, 3.35rem); line-height: 1.15; letter-spacing: -.05em; }
+h2 { margin: 0 0 .5rem; font-size: 1.1rem; }
+.card { background: white; border: 1px solid #cbd9ef; border-radius: 14px; }
+.controls { display:grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: .9rem; padding: 1rem; align-items: end; }
+.controls > label { grid-column: span 2; }
+.controls > button { grid-column: span 3; }
+label { display:grid; gap: .3rem; font-weight: 650; font-size: .9rem; }
+label small { display: inline; color: #566961; }
+input, select, button { font: inherit; color: inherit; min-height: 42px; padding: .4rem .6rem; background: white; border: 1px solid #a2b7db; border-radius: 8px; width: 100%; }
+button { width: auto; cursor: pointer; }
+button:hover { background: #e7efff; }
+button:disabled { opacity: .55; cursor: default; }
+#download { background: #174991; color: white; font-weight: 700; }
+.hint, #status { grid-column: 1/-1; margin: 0; color: #435775; font-size: .875rem; }
+.dashboard { display: grid; grid-template-columns: minmax(0, 1.8fr) minmax(290px, 1fr); gap: 1rem; margin: 1rem 0 2rem; }
+.data-options { padding: 1rem; margin: 0 0 2rem; }
+.data-options summary { cursor: pointer; font-weight: 700; }
+.data-options label { max-width: 32rem; margin-top: .75rem; }
+.data-options p, .data-options ul { margin: .65rem 0; }
+.map-card { position:relative; overflow:hidden; min-height: 510px; }
+#map { display: block; width: 100%; height: 100%; position: absolute; touch-action: none; cursor: grab; }
+.map-controls { position:absolute; z-index:1; top: 1rem; left: 1rem; display:flex; gap:.3rem; }
+.results { overflow:auto; padding: 1rem; height: 550px; }
+#details { padding: .9rem; margin-bottom: 1rem; border-radius: 10px; background: #edf3ff; overflow-wrap: anywhere; }
+#details p { margin: .4rem 0; }
+#details ul { padding-left: 1.3rem; }
+#results { padding:0; list-style:none; }
+#results button { width:100%; text-align:left; margin-bottom:.35rem; }
+#results button[aria-pressed="true"] { background: #e0ebff; border-color: #174991; }
+#results span { display:block; color: #435775; font-size:.875rem; }
+#results .station-price { margin-top: .2rem; color: #163d80; font-weight: 700; }
+@media(max-width: 780px) { .dashboard { grid-template-columns: 1fr; } .map-card { min-height: 400px; } }
+@media(max-width: 560px) {
+  .hero { background-image: linear-gradient(90deg, #081936 17%, #081936bf 45%, transparent 83%), url("bungaeman-background.png"); background-position: right center, right center; background-size: auto, auto 100%; }
+  .hero p { max-width: 16ch; }
+  .flight-stage { inset-inline-start: 54%; }
+  .controls { grid-template-columns: 1fr; }
+  .controls > label, .controls > button { grid-column: auto; }
+}

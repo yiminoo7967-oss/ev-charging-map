@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>전기차 충전 지도</title>
+<link rel="stylesheet" href="style.css">
+<script defer src="theme.js"></script>
+<script defer src="boundaries.js"></script>
+<script defer src="data.js"></script>
+<script defer src="built-in-stations.js"></script>
+<script defer src="built-in-rates.js"></script>
+<script defer src="app.js"></script>
+</head>
+<body>
+<header class="hero">
+  <div class="flight-stage" id="flight-stage" aria-hidden="true"></div>
+  <div class="shell hero-content">
+    <h1>전기차 충전 지도</h1>
+    <p>지역별 충전소와 원/kWh 요금을 확인하세요.</p>
+    <button class="theme-play" id="theme-play" type="button" aria-controls="theme-panel" aria-expanded="false">
+      <span aria-hidden="true">▶</span> 실행 <span class="theme-play-label">주제곡 재생</span>
+    </button>
+    <button class="motion-control" id="flight-toggle" type="button" aria-pressed="true">번개맨 애니메이션</button>
+  </div>
+</header>
+<main class="shell">
+<section class="theme-panel card" id="theme-panel" aria-label="번개맨 주제곡" hidden>
+  <h2>나는 번개맨이다</h2>
+  <div id="theme-player"></div>
+  <p id="theme-message" role="status" hidden></p>
+</section>
+<div class="controls card">
+  <label>시·도 <select id="province"></select></label>
+  <label>시·군·구 <select id="district"></select></label>
+  <label>충전 방식 <select id="speed"><option value="">전체</option><option>급속</option><option>완속</option><option>미분류</option></select></label>
+  <button id="download" disabled>선택 지역 충전소 CSV 저장</button>
+  <button id="download-tariffs" disabled>선택 지역 충전요금 CSV 저장</button>
+  <p id="status" role="status">기본 충전소와 충전요금을 불러오는 중입니다.</p>
+</div>
+<div class="dashboard">
+  <section class="card map-card" aria-label="충전소 지도">
+    <div class="map-controls"><button id="zoom-in" aria-label="확대">+</button><button id="zoom-out" aria-label="축소">−</button><button id="reset">원래 크기</button></div>
+    <canvas id="map" aria-label="행정동 경계와 충전소 위치">오른쪽 목록에서 충전소를 선택할 수 있습니다.</canvas>
+  </section>
+  <section class="card results">
+    <article id="details" aria-live="polite"><h2>충전소 상세</h2><p>지도 또는 목록에서 충전소를 선택하세요.</p></article>
+    <div class="list-heading"><h2>충전소 목록</h2><label>이름 또는 주소 검색<input id="search" type="search" placeholder="충전소 이름, 도로명"></label></div>
+    <ul id="results"></ul><button id="more" hidden>더 보기</button>
+  </section>
+</div>
+<details class="card data-options">
+  <summary>자료 출처 및 CSV 가져오기</summary>
+  <p>전국 충전소 목록의 기준일은 2025년 8월 7일입니다. 좌표가 확인된 충전소를 지도에 표시하며, 운영사 요금은 공개된 출력별 안내 단가입니다.</p>
+  <ul>
+    <li><a href="https://www.keco.or.kr/web/lay1/bbs/S1T1385C1392/F/257/view.do?article_seq=84663">한국환경공단 전국 충전소 목록</a></li>
+    <li><a href="https://www.data.go.kr/data/15102458/fileData.do">한국전력공사 충전소 좌표</a> · <a href="https://www.data.go.kr/data/15175474/fileData.do">전북특별자치도 충전소 좌표</a></li>
+    <li><a href="https://ev.or.kr/nportal/evcarInfo/initEvcarChargePriceV2.do">무공해차 통합누리집 운영사별 충전요금</a></li>
+  </ul>
+  <label>충전소 CSV로 바꾸기 <input id="stations" type="file" accept=".csv,text/csv"></label>
+  <label>충전소별 요금 CSV 추가 <input id="tariffs" type="file" accept=".csv,text/csv" aria-describedby="tariff-help"></label>
+  <p id="tariff-help">요금 CSV에는 충전소ID, 충전단가가 필요합니다.</p>
+  <button id="restore" type="button">기본 자료 다시 불러오기</button>
+</details>
+</main>
+</body>
+</html>
